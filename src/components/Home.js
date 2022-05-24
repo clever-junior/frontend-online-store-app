@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends React.Component {
   state = {
     termoPesquisado: '',
     resultadoPesquisa: [],
+    categorias: [],
+  }
+
+  async componentDidMount() {
+    const categorias = await getCategories();
+    console.log(categorias);
+    this.setState({ categorias });
   }
 
   handleChange = ({ target }) => {
@@ -23,11 +30,19 @@ class Home extends React.Component {
   }
 
   render() {
-    const { termoPesquisado, resultadoPesquisa } = this.state;
+    const { termoPesquisado, resultadoPesquisa, categorias } = this.state;
 
     return (
       <main>
         <div>
+          <div>
+            {categorias.map((categoria) => (
+              <label htmlFor={ categoria.id } data-testid="category" key={ categoria.id }>
+                <input type="checkbox" id={ categoria.id } />
+                {categoria.name}
+              </label>
+            ))}
+          </div>
           <div className="search-container">
             <Link to="/shopping-cart" data-testid="shopping-cart-button">Carrinho</Link>
             <p data-testid="home-initial-message">
