@@ -13,7 +13,6 @@ class Home extends React.Component {
 
   async componentDidMount() {
     const categorias = await getCategories();
-    console.log(categorias);
     this.setState({ categorias });
   }
 
@@ -74,6 +73,7 @@ class Home extends React.Component {
                   name={ item.title }
                   price={ item.price }
                   thumbnail={ item.thumbnail }
+                  id={ item.id }
                 />))
               : (
                 <p>Nenhum produto foi encontrado</p>
