@@ -19,9 +19,9 @@ class Home extends React.Component {
   async componentDidMount() {
     const categorias = await getCategories();
     const cartSize = localStorage
-    .getItem('itensDoCarrinho')
-    ? JSON.parse(localStorage.getItem('itensDoCarrinho')).length : 0;
-  this.setState({ categorias, quantidade: cartSize });
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).length : 0;
+    this.setState({ categorias, quantidade: cartSize });
   }
 
   handleChange = ({ target }) => {
@@ -46,7 +46,7 @@ class Home extends React.Component {
       price: result.price,
       quantidade: 1,
     };
-    console.log(result);
+
     const resultLocalStorage = this.verifyLocalStorage(product);
     let productsList = JSON.parse(localStorage.getItem('itensDoCarrinho'));
     if (productsList.some((element) => element.id === resultLocalStorage.id)) {
@@ -80,7 +80,14 @@ class Home extends React.Component {
       <main>
         <div>
           <div className="search-container">
-          <Link to="/shopping-cart" data-testid="shopping-cart-button" quantidade={ quantidade }>Carrinho {quantidade}</Link>
+            <Link
+              to="/shopping-cart"
+              data-testid="shopping-cart-button"
+              quantidade={ quantidade }
+            >
+              Carrinho
+              { quantidade }
+            </Link>
             <p data-testid="home-initial-message">
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
@@ -117,7 +124,6 @@ class Home extends React.Component {
                   id={ item.id }
                   name={ item.title }
                   price={ item.price }
-                  testID="product-add-to-cart"
                   thumbnail={ item.thumbnail }
                   addToCart={ this.addToCart }
                 />))
