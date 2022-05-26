@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getProductDetail } from '../services/api';
+import { getProducts } from '../services/api';
 
 class ProductDetail extends React.Component {
   state = {
@@ -9,7 +9,7 @@ class ProductDetail extends React.Component {
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
-    const product = await getProductDetail(id);
+    const product = await getProducts(id);
     this.setState({ product });
   }
 
