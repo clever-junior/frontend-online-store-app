@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { getProducts } from '../services/api';
+import { getProduct } from '../services/api';
 
 class ProductDetail extends React.Component {
   state = {
@@ -10,12 +10,12 @@ class ProductDetail extends React.Component {
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
-    const product = await getProducts(id);
+    const product = await getProduct(id);
     this.setState({ product });
   }
 
   addToCart = async ({ target }) => {
-    const result = await getProducts(target.id);
+    const result = await getProduct(target.id);
     const product = {
       name: result.title,
       id: result.id,
