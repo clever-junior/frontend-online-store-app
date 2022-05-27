@@ -2,16 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProduct } from '../services/api';
+import Stars from '../components/Stars';
+import ReviewStars from '../components/ReviewStars';
+// import Reviews from '../components/Reviews';
 
 class ProductDetail extends React.Component {
   state = {
     product: [],
+    userEmail: '',
+    productReview: '',
+    starRating: 0,
+    pageId: '',
+    listOfReviews: {},
   }
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const product = await getProduct(id);
-    this.setState({ product });
+    if (!JSON.parse(localStorage.getItem('productsReviews'))) {
+      localStorage.setItem('productsReviews', JSON.stringify({}));
+    }
+    const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
+    this.setState({ product, pageId: id, listOfReviews });
   }
 
   addToCart = async ({ target }) => {
@@ -49,38 +61,110 @@ class ProductDetail extends React.Component {
     return productObject;
   };
 
+  saveStarRating = (starRating) => {
+    this.setState({ starRating });
+  }
+
+  handleChange = ({ target }) => {
+    const { value, name } = target;
+    this.setState({ [name]: value });
+  }
+
+  saveReview = () => {
+    const { userEmail, productReview, starRating, pageId } = this.state;
+    const newReview = {
+      userEmail,
+      productReview,
+      starRating,
+    };
+
+    if (!JSON.parse(localStorage.getItem('productsReviews'))) {
+      localStorage.setItem('productsReviews', JSON.stringify({}));
+    }
+
+    const previousReviews = JSON.parse(localStorage.getItem('productsReviews'));
+
+    if (Object.keys(previousReviews).some((el) => el === pageId)) {
+      previousReviews[pageId] = [...previousReviews[pageId], newReview];
+    } else {
+      previousReviews[pageId] = [newReview];
+    }
+    localStorage.setItem('productsReviews', JSON.stringify(previousReviews));
+    this.setState({ listOfReviews: previousReviews });
+  }
+
   render() {
-    const { product, product: { warranty } } = this.state;
+    const { product, product: { warranty }, userEmail, productReview,
+      listOfReviews } = this.state;
+    const { match: { params: { id } } } = this.props;
     return (
       <div>
-        <Link
-          to="/shopping-cart"
-          data-testid="shopping-cart-button"
-        >
-          Ir Para o carrinho
-        </Link>
-        <h2
-          data-testid="product-detail-name"
-        >
-          { product.title }
-        </h2>
-        <h2>
-          R$
-          {product.price}
-        </h2>
-        <img src={ product.thumbnail } alt={ product.title } />
         <div>
-          <h4>Garantia</h4>
-          <p>{warranty}</p>
+          <Link
+            to="/shopping-cart"
+            data-testid="shopping-cart-button"
+          >
+            Ir Para o carrinho
+          </Link>
+          <h2
+            data-testid="product-detail-name"
+          >
+            { product.title }
+          </h2>
+          <h2>
+            R$
+            {product.price}
+          </h2>
+          <img src={ product.thumbnail } alt={ product.title } />
+          <div>
+            <h4>Garantia</h4>
+            <p>{warranty}</p>
+          </div>
+          <button
+            id={ product.id }
+            type="button"
+            data-testid="product-detail-add-to-cart"
+            onClick={ this.addToCart }
+          >
+            Adicionar ao carrinho
+          </button>
         </div>
-        <button
-          id={ product.id }
-          type="button"
-          data-testid="product-detail-add-to-cart"
-          onClick={ this.addToCart }
-        >
-          Adicionar ao carrinho
-        </button>
+        <div>
+          <form>
+            <input
+              type="email"
+              name="userEmail"
+              value={ userEmail }
+              placeholder="Digite seu e-mail"
+              onChange={ this.handleChange }
+              data-testid="product-detail-email"
+            />
+            <textarea
+              data-testid="product-detail-evaluation"
+              name="productReview"
+              value={ productReview }
+              onChange={ this.handleChange }
+            />
+            <button
+              onClick={ this.saveReview }
+              type="button"
+              data-testid="submit-review-btn"
+            >
+              Avaliar
+            </button>
+          </form>
+          <Stars saveStarRating={ this.saveStarRating } />
+        </div>
+        {/* <Reviews pageId={ id } listOfReviews={ listOfReviews[id] } /> */}
+        <div>
+          {listOfReviews[id] && listOfReviews[id].map((review, index) => (
+            <div key={ index }>
+              <p>{review.userEmail}</p>
+              <ReviewStars rating={ review.starRating } />
+              <p>{review.productReview}</p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
