@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 class Categories extends React.Component {
   render() {
-    const { id, name, searchTerm } = this.props;
+    const { id, name, onClick } = this.props;
     return (
       <label htmlFor={ id } data-testid="category">
         <input
           type="radio"
           id={ id }
           name="categoriaSelecionada"
-          onClick={ (e) => searchTerm(e.target.id) }
+          onClick={ () => onClick(id) }
         />
         { name }
       </label>
@@ -21,7 +21,7 @@ class Categories extends React.Component {
 Categories.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  searchTerm: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default Categories;

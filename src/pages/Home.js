@@ -4,13 +4,14 @@ import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import {
   getCategories,
-  getProducts,
+  getProduct,
   getProductsFromCategoryAndQuery,
 } from '../services/api';
 
 class Home extends React.Component {
   state = {
     termoPesquisado: '',
+    idCategoriaPesquisada: '',
     resultadoPesquisa: [],
     categorias: [],
     quantidade: 0,
@@ -24,21 +25,26 @@ class Home extends React.Component {
     this.setState({ categorias, quantidade: cartSize });
   }
 
+  handleCategoryChange = (id) => {
+    this.setState(
+      { idCategoriaPesquisada: id, termoPesquisado: '' }, () => this.searchTerm(),
+    );
+  }
+
   handleChange = ({ target }) => {
-    const { name } = target;
-    const value = target.checked ? target.id : target.value;
+    const { name, value } = target;
     this.setState({ [name]: value });
   }
 
-  searchTerm = async (categoryId) => {
-    const { termoPesquisado } = this.state;
+  searchTerm = async () => {
+    const { termoPesquisado, idCategoriaPesquisada } = this.state;
     const resultadoPesquisa = await
-    getProductsFromCategoryAndQuery(categoryId, termoPesquisado);
+    getProductsFromCategoryAndQuery(idCategoriaPesquisada, termoPesquisado);
     this.setState({ resultadoPesquisa: resultadoPesquisa.results });
   }
 
   addToCart = async ({ target }) => {
-    const result = await getProducts(target.id);
+    const result = await getProduct(target.id);
     const product = {
       name: result.title,
       id: result.id,
@@ -111,7 +117,7 @@ class Home extends React.Component {
                   key={ categoria.id }
                   id={ categoria.id }
                   name={ categoria.name }
-                  searchTerm={ this.searchTerm }
+                  onClick={ this.handleCategoryChange }
                 />
               ))}
             </div>
