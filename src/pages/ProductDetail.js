@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { getProduct } from '../services/api';
 import Stars from '../components/Stars';
 import ReviewStars from '../components/ReviewStars';
-// import Reviews from '../components/Reviews';
 
 class ProductDetail extends React.Component {
   state = {

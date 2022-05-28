@@ -22,8 +22,14 @@ class ShoppingCart extends Component {
       } else {
         selectedProduct.quantidade -= 1;
       }
-    } else {
-      selectedProduct.quantidade += 1;
+    }
+
+    if (name === 'add') {
+      if (selectedProduct.quantidade === selectedProduct.availableQuantity) {
+        selectedProduct.quantidade = selectedProduct.availableQuantity;
+      } else {
+        selectedProduct.quantidade += 1;
+      }
     }
     const index = productsList
       .indexOf(productsList.find((element) => element.id === id));
@@ -35,8 +41,6 @@ class ShoppingCart extends Component {
 
   render() {
     const { productsList } = this.state;
-    // const productsList = JSON.parse(localStorage.getItem('itensDoCarrinho'));
-    console.log(productsList);
     return (
       <div>
         { !productsList

@@ -49,6 +49,7 @@ class Home extends React.Component {
       thumbnail: result.thumbnail,
       price: result.price,
       quantidade: 1,
+      availableQuantity: result.available_quantity,
     };
 
     const resultLocalStorage = this.verifyLocalStorage(product);
