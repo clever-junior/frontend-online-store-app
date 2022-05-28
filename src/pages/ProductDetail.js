@@ -14,6 +14,7 @@ class ProductDetail extends React.Component {
     starRating: 0,
     pageId: '',
     listOfReviews: {},
+    cartSize: 0,
   }
 
   async componentDidMount() {
@@ -24,6 +25,17 @@ class ProductDetail extends React.Component {
     }
     const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
     this.setState({ product, pageId: id, listOfReviews });
+    this.updateCartSize();
+  }
+
+  updateCartSize = () => {
+    const cartSize = localStorage
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
+        acc += el.quantidade;
+        return acc;
+      }, 0) : 0;
+    this.setState({ cartSize });
   }
 
   addToCart = async ({ target }) => {
@@ -46,6 +58,7 @@ class ProductDetail extends React.Component {
       productsList = [...productsList, resultLocalStorage];
     }
     localStorage.setItem('itensDoCarrinho', JSON.stringify(productsList));
+    this.updateCartSize();
   }
 
   verifyLocalStorage = (productObject) => {
@@ -95,7 +108,7 @@ class ProductDetail extends React.Component {
 
   render() {
     const { product, product: { warranty }, userEmail, productReview,
-      listOfReviews } = this.state;
+      listOfReviews, cartSize } = this.state;
     const { match: { params: { id } } } = this.props;
     return (
       <div>
@@ -104,7 +117,8 @@ class ProductDetail extends React.Component {
             to="/shopping-cart"
             data-testid="shopping-cart-button"
           >
-            Ir Para o carrinho
+            Ir Para o carrinho -
+            <span data-testid="shopping-cart-size">{cartSize}</span>
           </Link>
           <h2
             data-testid="product-detail-name"

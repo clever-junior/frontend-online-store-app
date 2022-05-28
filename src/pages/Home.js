@@ -14,15 +14,13 @@ class Home extends React.Component {
     idCategoriaPesquisada: '',
     resultadoPesquisa: [],
     categorias: [],
-    quantidade: 0,
+    cartSize: 0,
   }
 
   async componentDidMount() {
     const categorias = await getCategories();
-    const cartSize = localStorage
-      .getItem('itensDoCarrinho')
-      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).length : 0;
-    this.setState({ categorias, quantidade: cartSize });
+    this.updateCartSize();
+    this.setState({ categorias });
   }
 
   handleCategoryChange = (id) => {
@@ -63,7 +61,17 @@ class Home extends React.Component {
       productsList = [...productsList, resultLocalStorage];
     }
     localStorage.setItem('itensDoCarrinho', JSON.stringify(productsList));
-    this.setState({ quantidade: productsList.length });
+    this.updateCartSize();
+  }
+
+  updateCartSize = () => {
+    const cartSize = localStorage
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
+        acc += el.quantidade;
+        return acc;
+      }, 0) : 0;
+    this.setState({ cartSize });
   }
 
   verifyLocalStorage = (productObject) => {
@@ -80,7 +88,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const { termoPesquisado, resultadoPesquisa, categorias, quantidade } = this.state;
+    const { termoPesquisado, resultadoPesquisa, categorias, cartSize } = this.state;
 
     return (
       <main>
@@ -91,7 +99,7 @@ class Home extends React.Component {
               data-testid="shopping-cart-button"
             >
               Carrinho -
-              { quantidade }
+              <span data-testid="shopping-cart-size">{ cartSize }</span>
             </Link>
             <p data-testid="home-initial-message">
               Digite algum termo de pesquisa ou escolha uma categoria.
