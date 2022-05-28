@@ -14,6 +14,7 @@ class ProductDetail extends React.Component {
     pageId: '',
     listOfReviews: {},
     cartSize: 0,
+    freeShipping: false,
   }
 
   async componentDidMount() {
@@ -23,7 +24,12 @@ class ProductDetail extends React.Component {
       localStorage.setItem('productsReviews', JSON.stringify({}));
     }
     const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
-    this.setState({ product, pageId: id, listOfReviews });
+    this.setState({
+      product,
+      pageId: id,
+      listOfReviews,
+      freeShipping: product.shipping.free_shipping,
+    });
     this.updateCartSize();
   }
 
@@ -107,7 +113,7 @@ class ProductDetail extends React.Component {
 
   render() {
     const { product, product: { warranty }, userEmail, productReview,
-      listOfReviews, cartSize } = this.state;
+      listOfReviews, cartSize, freeShipping } = this.state;
     const { match: { params: { id } } } = this.props;
     return (
       <div>
@@ -123,6 +129,14 @@ class ProductDetail extends React.Component {
             data-testid="product-detail-name"
           >
             { product.title }
+            {freeShipping
+            && (
+              <span
+                data-testid="free-shipping"
+              >
+                - Frete Grátis
+              </span>
+            )}
           </h2>
           <h2>
             R$
