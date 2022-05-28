@@ -89,9 +89,8 @@ class Home extends React.Component {
             <Link
               to="/shopping-cart"
               data-testid="shopping-cart-button"
-              quantidade={ quantidade }
             >
-              Carrinho
+              Carrinho -
               { quantidade }
             </Link>
             <p data-testid="home-initial-message">

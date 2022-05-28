@@ -8,18 +8,17 @@ class Stars extends React.Component {
     currRating: 0,
   }
 
-  onHover = ({ target }) => {
-    if (target.dataset.value !== 'star') {
-      this.setRating(target.dataset.value);
-    }
-  }
+  // onHover = ({ target }) => {
+  //   if (target.className === 'star') {
+  //     this.setRating(target.dataset.value);
+  //   }
+  // }
 
   onClick = ({ target }) => {
-    console.log('hello');
     const { dataset: { value } } = target;
     const { currRating } = this.state;
     if (value !== currRating) {
-      this.setRating(value - 1);
+      this.setRating(value);
     }
   }
 
@@ -32,18 +31,17 @@ class Stars extends React.Component {
     const { currRating } = this.state;
     return (
       <div>
-        {[...Array(+'5').keys()].map((el) => (
-          <img
-            data-testid={ `${el + 1}-rating` }
-            style={ { width: '30px' } }
-            className="star"
-            data-value={ el + 1 }
-            key={ el }
-            src={ el + 1 <= currRating ? FilledStar : EmptyStar }
-            alt={ el + 1 <= currRating ? 'filled star' : 'empty star' }
-            onMouseOver={ this.onHover }
-            onClick={ this.onClick }
-          />
+        {[...Array(+'5').keys()].map((index) => (
+          <button type="button" key={ index } onClick={ this.onClick }>
+            <img
+              data-testid={ `${index + 1}-rating` }
+              style={ { width: '30px' } }
+              className="star"
+              data-value={ index + 1 }
+              src={ index + 1 <= currRating ? FilledStar : EmptyStar }
+              alt={ index + 1 <= currRating ? 'filled star' : 'empty star' }
+            />
+          </button>
         ))}
       </div>
     );

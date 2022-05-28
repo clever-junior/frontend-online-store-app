@@ -139,6 +139,7 @@ class ProductDetail extends React.Component {
               onChange={ this.handleChange }
               data-testid="product-detail-email"
             />
+            <Stars saveStarRating={ this.saveStarRating } />
             <textarea
               data-testid="product-detail-evaluation"
               name="productReview"
@@ -153,7 +154,6 @@ class ProductDetail extends React.Component {
               Avaliar
             </button>
           </form>
-          <Stars saveStarRating={ this.saveStarRating } />
         </div>
         {/* <Reviews pageId={ id } listOfReviews={ listOfReviews[id] } /> */}
         <div>
