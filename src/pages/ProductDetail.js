@@ -12,7 +12,6 @@ class ProductDetail extends React.Component {
     productReview: '',
     starRating: 0,
     pageId: '',
-    listOfReviews: {},
     cartSize: 0,
     freeShipping: false,
   }
@@ -20,14 +19,9 @@ class ProductDetail extends React.Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const product = await getProduct(id);
-    if (!JSON.parse(localStorage.getItem('productsReviews'))) {
-      localStorage.setItem('productsReviews', JSON.stringify({}));
-    }
-    const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
     this.setState({
       product,
       pageId: id,
-      listOfReviews,
       freeShipping: product.shipping.free_shipping,
     });
     this.updateCartSize();
@@ -107,13 +101,21 @@ class ProductDetail extends React.Component {
       previousReviews[pageId] = [newReview];
     }
     localStorage.setItem('productsReviews', JSON.stringify(previousReviews));
-    this.setState({ listOfReviews: previousReviews });
+    this.setState({
+      userEmail: '',
+      productReview: '',
+      starRating: 0,
+    });
   }
 
   render() {
     const { product, product: { warranty }, userEmail, productReview,
-      listOfReviews, cartSize, freeShipping } = this.state;
+      cartSize, freeShipping } = this.state;
     const { match: { params: { id } } } = this.props;
+    if (!JSON.parse(localStorage.getItem('productsReviews'))) {
+      localStorage.setItem('productsReviews', JSON.stringify({}));
+    }
+    const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
     return (
       <div>
         <div>
@@ -181,7 +183,6 @@ class ProductDetail extends React.Component {
             </button>
           </form>
         </div>
-        {/* <Reviews pageId={ id } listOfReviews={ listOfReviews[id] } /> */}
         <div>
           {listOfReviews[id] && listOfReviews[id].map((review, index) => (
             <div key={ index }>
