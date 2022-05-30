@@ -4,7 +4,6 @@ import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import {
   getCategories,
-  getProduct,
   getProductsFromCategoryAndQuery,
 } from '../services/api';
 
@@ -41,15 +40,14 @@ class Home extends React.Component {
     this.setState({ resultadoPesquisa: resultadoPesquisa.results });
   }
 
-  addToCart = async ({ target }) => {
-    const result = await getProduct(target.id);
+  addToCart = async (item) => {
     const product = {
-      name: result.title,
-      id: result.id,
-      thumbnail: result.thumbnail,
-      price: result.price,
+      name: item.title,
+      id: item.id,
+      thumbnail: item.thumbnail,
+      price: item.price,
       quantidade: 1,
-      availableQuantity: result.available_quantity,
+      availableQuantity: item.available_quantity,
     };
 
     const resultLocalStorage = this.verifyLocalStorage(product);
@@ -140,7 +138,7 @@ class Home extends React.Component {
                   price={ item.price }
                   thumbnail={ item.thumbnail }
                   freeShipping={ item.shipping.free_shipping }
-                  addToCart={ this.addToCart }
+                  addToCart={ () => this.addToCart(item) }
                 />))
               : (
                 <p>Nenhum produto foi encontrado</p>

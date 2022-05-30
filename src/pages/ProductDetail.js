@@ -43,13 +43,12 @@ class ProductDetail extends React.Component {
     this.setState({ cartSize });
   }
 
-  addToCart = async ({ target }) => {
-    const result = await getProduct(target.id);
+  addToCart = async (item) => {
     const product = {
-      name: result.title,
-      id: result.id,
-      thumbnail: result.thumbnail,
-      price: result.price,
+      name: item.title,
+      id: item.id,
+      thumbnail: item.thumbnail,
+      price: item.price,
       quantidade: 1,
     };
 
@@ -151,7 +150,7 @@ class ProductDetail extends React.Component {
             id={ product.id }
             type="button"
             data-testid="product-detail-add-to-cart"
-            onClick={ this.addToCart }
+            onClick={ () => this.addToCart(product) }
           >
             Adicionar ao carrinho
           </button>
