@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { getProduct } from '../services/api';
 import Stars from '../components/Stars';
 import ReviewStars from '../components/ReviewStars';
-// import Reviews from '../components/Reviews';
 
 class ProductDetail extends React.Component {
   state = {
@@ -14,6 +13,8 @@ class ProductDetail extends React.Component {
     starRating: 0,
     pageId: '',
     listOfReviews: {},
+    cartSize: 0,
+    freeShipping: false,
   }
 
   async componentDidMount() {
@@ -23,16 +24,31 @@ class ProductDetail extends React.Component {
       localStorage.setItem('productsReviews', JSON.stringify({}));
     }
     const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
-    this.setState({ product, pageId: id, listOfReviews });
+    this.setState({
+      product,
+      pageId: id,
+      listOfReviews,
+      freeShipping: product.shipping.free_shipping,
+    });
+    this.updateCartSize();
   }
 
-  addToCart = async ({ target }) => {
-    const result = await getProduct(target.id);
+  updateCartSize = () => {
+    const cartSize = localStorage
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
+        acc += el.quantidade;
+        return acc;
+      }, 0) : 0;
+    this.setState({ cartSize });
+  }
+
+  addToCart = async (item) => {
     const product = {
-      name: result.title,
-      id: result.id,
-      thumbnail: result.thumbnail,
-      price: result.price,
+      name: item.title,
+      id: item.id,
+      thumbnail: item.thumbnail,
+      price: item.price,
       quantidade: 1,
     };
 
@@ -46,6 +62,7 @@ class ProductDetail extends React.Component {
       productsList = [...productsList, resultLocalStorage];
     }
     localStorage.setItem('itensDoCarrinho', JSON.stringify(productsList));
+    this.updateCartSize();
   }
 
   verifyLocalStorage = (productObject) => {
@@ -95,7 +112,7 @@ class ProductDetail extends React.Component {
 
   render() {
     const { product, product: { warranty }, userEmail, productReview,
-      listOfReviews } = this.state;
+      listOfReviews, cartSize, freeShipping } = this.state;
     const { match: { params: { id } } } = this.props;
     return (
       <div>
@@ -104,12 +121,21 @@ class ProductDetail extends React.Component {
             to="/shopping-cart"
             data-testid="shopping-cart-button"
           >
-            Ir Para o carrinho
+            Ir Para o carrinho -
+            <span data-testid="shopping-cart-size">{cartSize}</span>
           </Link>
           <h2
             data-testid="product-detail-name"
           >
             { product.title }
+            {freeShipping
+            && (
+              <span
+                data-testid="free-shipping"
+              >
+                - Frete Grátis
+              </span>
+            )}
           </h2>
           <h2>
             R$
@@ -124,7 +150,7 @@ class ProductDetail extends React.Component {
             id={ product.id }
             type="button"
             data-testid="product-detail-add-to-cart"
-            onClick={ this.addToCart }
+            onClick={ () => this.addToCart(product) }
           >
             Adicionar ao carrinho
           </button>
@@ -139,6 +165,7 @@ class ProductDetail extends React.Component {
               onChange={ this.handleChange }
               data-testid="product-detail-email"
             />
+            <Stars saveStarRating={ this.saveStarRating } />
             <textarea
               data-testid="product-detail-evaluation"
               name="productReview"
@@ -153,7 +180,6 @@ class ProductDetail extends React.Component {
               Avaliar
             </button>
           </form>
-          <Stars saveStarRating={ this.saveStarRating } />
         </div>
         {/* <Reviews pageId={ id } listOfReviews={ listOfReviews[id] } /> */}
         <div>

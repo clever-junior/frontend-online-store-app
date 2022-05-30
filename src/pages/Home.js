@@ -4,7 +4,6 @@ import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import {
   getCategories,
-  getProduct,
   getProductsFromCategoryAndQuery,
 } from '../services/api';
 
@@ -14,15 +13,13 @@ class Home extends React.Component {
     idCategoriaPesquisada: '',
     resultadoPesquisa: [],
     categorias: [],
-    quantidade: 0,
+    cartSize: 0,
   }
 
   async componentDidMount() {
     const categorias = await getCategories();
-    const cartSize = localStorage
-      .getItem('itensDoCarrinho')
-      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).length : 0;
-    this.setState({ categorias, quantidade: cartSize });
+    this.updateCartSize();
+    this.setState({ categorias });
   }
 
   handleCategoryChange = (id) => {
@@ -43,14 +40,14 @@ class Home extends React.Component {
     this.setState({ resultadoPesquisa: resultadoPesquisa.results });
   }
 
-  addToCart = async ({ target }) => {
-    const result = await getProduct(target.id);
+  addToCart = async (item) => {
     const product = {
-      name: result.title,
-      id: result.id,
-      thumbnail: result.thumbnail,
-      price: result.price,
+      name: item.title,
+      id: item.id,
+      thumbnail: item.thumbnail,
+      price: item.price,
       quantidade: 1,
+      availableQuantity: item.available_quantity,
     };
 
     const resultLocalStorage = this.verifyLocalStorage(product);
@@ -63,7 +60,17 @@ class Home extends React.Component {
       productsList = [...productsList, resultLocalStorage];
     }
     localStorage.setItem('itensDoCarrinho', JSON.stringify(productsList));
-    this.setState({ quantidade: productsList.length });
+    this.updateCartSize();
+  }
+
+  updateCartSize = () => {
+    const cartSize = localStorage
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
+        acc += el.quantidade;
+        return acc;
+      }, 0) : 0;
+    this.setState({ cartSize });
   }
 
   verifyLocalStorage = (productObject) => {
@@ -80,7 +87,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const { termoPesquisado, resultadoPesquisa, categorias, quantidade } = this.state;
+    const { termoPesquisado, resultadoPesquisa, categorias, cartSize } = this.state;
 
     return (
       <main>
@@ -89,10 +96,9 @@ class Home extends React.Component {
             <Link
               to="/shopping-cart"
               data-testid="shopping-cart-button"
-              quantidade={ quantidade }
             >
-              Carrinho
-              { quantidade }
+              Carrinho -
+              <span data-testid="shopping-cart-size">{ cartSize }</span>
             </Link>
             <p data-testid="home-initial-message">
               Digite algum termo de pesquisa ou escolha uma categoria.
@@ -131,7 +137,8 @@ class Home extends React.Component {
                   name={ item.title }
                   price={ item.price }
                   thumbnail={ item.thumbnail }
-                  addToCart={ this.addToCart }
+                  freeShipping={ item.shipping.free_shipping }
+                  addToCart={ () => this.addToCart(item) }
                 />))
               : (
                 <p>Nenhum produto foi encontrado</p>

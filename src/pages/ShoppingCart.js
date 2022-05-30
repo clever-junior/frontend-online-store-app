@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+// import { AsyncStorage } from 'react-native';
 
 class ShoppingCart extends Component {
   state = {
@@ -21,8 +22,14 @@ class ShoppingCart extends Component {
       } else {
         selectedProduct.quantidade -= 1;
       }
-    } else {
-      selectedProduct.quantidade += 1;
+    }
+
+    if (name === 'add') {
+      if (selectedProduct.quantidade === selectedProduct.availableQuantity) {
+        selectedProduct.quantidade = selectedProduct.availableQuantity;
+      } else {
+        selectedProduct.quantidade += 1;
+      }
     }
     const index = productsList
       .indexOf(productsList.find((element) => element.id === id));
@@ -36,7 +43,7 @@ class ShoppingCart extends Component {
     const { productsList } = this.state;
     return (
       <div>
-        { (!productsList)
+        { !productsList
           ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
           : (
             <div>
@@ -78,6 +85,8 @@ class ShoppingCart extends Component {
             </div>
           )}
         <Link to="/">Home</Link>
+        <br />
+        <Link to="/checkout" data-testid="checkout-products">Finalizar Compra </Link>
       </div>
     );
   }
