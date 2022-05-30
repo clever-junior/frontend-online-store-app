@@ -24,7 +24,6 @@ class ProductDetail extends React.Component {
       pageId: id,
       freeShipping: product.shipping.free_shipping,
     });
-    this.updateCartSize();
   }
 
   updateCartSize = () => {
@@ -35,6 +34,16 @@ class ProductDetail extends React.Component {
         return acc;
       }, 0) : 0;
     this.setState({ cartSize });
+  }
+
+  getCartSize = () => {
+    const cartSize = localStorage
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
+        acc += el.quantidade;
+        return acc;
+      }, 0) : 0;
+    return cartSize;
   }
 
   addToCart = async (item) => {
@@ -110,7 +119,7 @@ class ProductDetail extends React.Component {
 
   render() {
     const { product, product: { warranty }, userEmail, productReview,
-      cartSize, freeShipping } = this.state;
+      freeShipping, cartSize } = this.state;
     const { match: { params: { id } } } = this.props;
     if (!JSON.parse(localStorage.getItem('productsReviews'))) {
       localStorage.setItem('productsReviews', JSON.stringify({}));
@@ -124,7 +133,9 @@ class ProductDetail extends React.Component {
             data-testid="shopping-cart-button"
           >
             Ir Para o carrinho -
-            <span data-testid="shopping-cart-size">{cartSize}</span>
+            <span data-testid="shopping-cart-size">
+              {cartSize > 0 ? cartSize : this.getCartSize()}
+            </span>
           </Link>
           <h2
             data-testid="product-detail-name"
