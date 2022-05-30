@@ -12,7 +12,6 @@ class ProductDetail extends React.Component {
     productReview: '',
     starRating: 0,
     pageId: '',
-    listOfReviews: {},
     cartSize: 0,
     freeShipping: false,
   }
@@ -20,17 +19,11 @@ class ProductDetail extends React.Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const product = await getProduct(id);
-    if (!JSON.parse(localStorage.getItem('productsReviews'))) {
-      localStorage.setItem('productsReviews', JSON.stringify({}));
-    }
-    const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
     this.setState({
       product,
       pageId: id,
-      listOfReviews,
       freeShipping: product.shipping.free_shipping,
     });
-    this.updateCartSize();
   }
 
   updateCartSize = () => {
@@ -41,6 +34,16 @@ class ProductDetail extends React.Component {
         return acc;
       }, 0) : 0;
     this.setState({ cartSize });
+  }
+
+  getCartSize = () => {
+    const cartSize = localStorage
+      .getItem('itensDoCarrinho')
+      ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
+        acc += el.quantidade;
+        return acc;
+      }, 0) : 0;
+    return cartSize;
   }
 
   addToCart = async (item) => {
@@ -107,13 +110,21 @@ class ProductDetail extends React.Component {
       previousReviews[pageId] = [newReview];
     }
     localStorage.setItem('productsReviews', JSON.stringify(previousReviews));
-    this.setState({ listOfReviews: previousReviews });
+    this.setState({
+      userEmail: '',
+      productReview: '',
+      starRating: 0,
+    });
   }
 
   render() {
     const { product, product: { warranty }, userEmail, productReview,
-      listOfReviews, cartSize, freeShipping } = this.state;
+      freeShipping, cartSize } = this.state;
     const { match: { params: { id } } } = this.props;
+    if (!JSON.parse(localStorage.getItem('productsReviews'))) {
+      localStorage.setItem('productsReviews', JSON.stringify({}));
+    }
+    const listOfReviews = JSON.parse(localStorage.getItem('productsReviews'));
     return (
       <div>
         <div>
@@ -122,7 +133,9 @@ class ProductDetail extends React.Component {
             data-testid="shopping-cart-button"
           >
             Ir Para o carrinho -
-            <span data-testid="shopping-cart-size">{cartSize}</span>
+            <span data-testid="shopping-cart-size">
+              {cartSize > 0 ? cartSize : this.getCartSize()}
+            </span>
           </Link>
           <h2
             data-testid="product-detail-name"
@@ -181,7 +194,6 @@ class ProductDetail extends React.Component {
             </button>
           </form>
         </div>
-        {/* <Reviews pageId={ id } listOfReviews={ listOfReviews[id] } /> */}
         <div>
           {listOfReviews[id] && listOfReviews[id].map((review, index) => (
             <div key={ index }>
