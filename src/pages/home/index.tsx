@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Categories from '../components/Categories';
-import ProductCard from '../components/ProductCard';
+import Categories from '../../components/Categories';
+import ProductCard from '../../components/ProductCard';
 import {
   getCategories,
   getProductsFromCategoryAndQuery,
-} from '../services/api';
+} from '../../services/api';
 
 class Home extends React.Component {
   state = {

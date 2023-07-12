@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReviewStars from './ReviewStars';
 
 class Reviews extends React.Component {
@@ -19,8 +18,8 @@ class Reviews extends React.Component {
   }
 }
 
-Reviews.propTypes = {
-  listOfReviews: PropTypes.arrayOf().isRequired,
-};
+// Reviews.propTypes = {
+//   listOfReviews: PropTypes.arrayOf().isRequired,
+// };
 
 export default Reviews;

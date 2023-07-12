@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 class Categories extends React.Component {
   render() {
@@ -18,10 +18,10 @@ class Categories extends React.Component {
   }
 }
 
-Categories.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
+// Categories.propTypes = {
+//   id: PropTypes.string.isRequired,
+//   name: PropTypes.string.isRequired,
+//   onClick: PropTypes.func.isRequired,
+// };
 
 export default Categories;

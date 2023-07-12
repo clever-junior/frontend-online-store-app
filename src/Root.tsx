@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Home from './pages/Home';
-import ShoppingCart from './pages/ShoppingCart';
-import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
+import ProductDetail from './pages/ProductDetail';
+import ShoppingCart from './pages/ShoppingCart';
+import Home from './pages/home';
 
 function Root() {
   return (
