@@ -1,10 +1,14 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import IProduct from '../interfaces/IProduct';
 
-class ProductCard extends React.Component {
-  render() {
-    const { thumbnail, name, price, addToCart, id, freeShipping } = this.props;
+interface ProductCardProps {
+  product: IProduct,
+  onClick: (product: IProduct) => void,
+}
+
+function ProductCard({ product, onClick }: ProductCardProps) {
+    const { thumbnail, title: name, price, id, shipping: { free_shipping: freeShipping } } = product;
+
     return (
       <div data-testid="product">
         <p>
@@ -16,7 +20,7 @@ class ProductCard extends React.Component {
         <button
           id={ id }
           type="button"
-          onClick={ (e) => addToCart(e) }
+          onClick={ () => onClick(product) }
           data-testid="product-add-to-cart"
         >
           adicionar a carrinho
@@ -29,16 +33,6 @@ class ProductCard extends React.Component {
         </Link>
       </div>
     );
-  }
 }
-
-// ProductCard.propTypes = {
-//   thumbnail: PropTypes.string.isRequired,
-//   name: PropTypes.string.isRequired,
-//   price: PropTypes.number.isRequired,
-//   id: PropTypes.string.isRequired,
-//   addToCart: PropTypes.func.isRequired,
-//   freeShipping: PropTypes.bool.isRequired,
-// };
 
 export default ProductCard;

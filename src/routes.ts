@@ -1,4 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import Root from "./Root";
+import AppLayout from "./AppLayout";
 
-export const router = createBrowserRouter([{ path: "*", Component: Root }]);
+export const router = createBrowserRouter([
+  {
+    path: "*",
+    Component: AppLayout,
+  }
+]);

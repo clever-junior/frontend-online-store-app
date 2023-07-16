@@ -1,0 +1,189 @@
+{
+  "id": "MLB1563389012",
+  "title": "Kit 10 Farol Milha 16 Led 48w 12v/24v Quadrad Off-road 6000k",
+  "condition": "new",
+  "thumbnail_id": "995163-MLB50738540438_072022",
+  "catalog_product_id": null,
+  "listing_type_id": "gold_special",
+  "permalink": "https://produto.mercadolivre.com.br/MLB-1563389012-kit-10-farol-milha-16-led-48w-12v24v-quadrad-off-road-6000k-_JM",
+  "buying_mode": "buy_it_now",
+  "site_id": "MLB",
+  "category_id": "MLB46659",
+  "domain_id": "MLB-VEHICLE_AUXILIARY_LIGHTS",
+  "thumbnail": "http://http2.mlstatic.com/D_995163-MLB50738540438_072022-I.jpg",
+  "currency_id": "BRL",
+  "order_backend": 1,
+  "price": 161.25,
+  "original_price": 215,
+  "sale_price": null,
+  "sold_quantity": 5000,
+  "available_quantity": 5000,
+  "official_store_id": 5378,
+  "official_store_name": "Donon SP",
+  "use_thumbnail_id": true,
+  "accepts_mercadopago": true,
+  "tags": [
+      "brand_verified",
+      "good_quality_picture",
+      "good_quality_thumbnail",
+      "lightning_deal",
+      "loyalty_discount_eligible",
+      "immediate_payment",
+      "cart_eligible",
+      "best_seller_candidate",
+      "shipping_guaranteed"
+  ],
+  "shipping": {
+      "store_pick_up": false,
+      "free_shipping": true,
+      "logistic_type": "cross_docking",
+      "mode": "me2",
+      "tags": [
+          "self_service_in",
+          "mandatory_free_shipping"
+      ],
+      "benefits": null,
+      "promise": null
+  },
+  "stop_time": "2043-06-21T01:21:26.000Z",
+  "seller": {
+      "id": 539465729,
+      "nickname": "HONESTY SP",
+      "car_dealer": false,
+      "real_estate_agency": false,
+      "_": false,
+      "registration_date": "2020-03-26T13:20:33.000-04:00",
+      "tags": [
+          "brand",
+          "large_seller",
+          "eshop",
+          "mshops",
+          "credits_profile",
+          "messages_as_seller"
+      ],
+      "car_dealer_logo": "",
+      "permalink": "http://perfil.mercadolivre.com.br/DONON+SP",
+      "seller_reputation": {
+          "level_id": "5_green",
+          "power_seller_status": "platinum",
+          "transactions": {
+              "canceled": 4587,
+              "completed": 112564,
+              "period": "historic",
+              "ratings": {
+                  "negative": 0.07,
+                  "neutral": 0.03,
+                  "positive": 0.9
+              },
+              "total": 117151
+          },
+          "metrics": {
+              "sales": {
+                  "period": "60 days",
+                  "completed": 17647
+              },
+              "claims": {
+                  "period": "60 days",
+                  "rate": 0.0043,
+                  "value": 80
+              },
+              "delayed_handling_time": {
+                  "period": "60 days",
+                  "rate": 0.0082,
+                  "value": 128
+              },
+              "cancellations": {
+                  "period": "60 days",
+                  "rate": 0.0008,
+                  "value": 15
+              }
+          }
+      },
+      "eshop": {
+          "eshop_id": 415909,
+          "seller": 539465729,
+          "nick_name": "HONESTY SP",
+          "eshop_status_id": 1,
+          "site_id": "MLB",
+          "eshop_experience": 0,
+          "eshop_rubro": null,
+          "eshop_locations": [],
+          "eshop_logo_url": "http://http2.mlstatic.com/eshops-logo/539465729v4c5f9a.png"
+      }
+  },
+  "seller_address": {
+      "comment": "",
+      "address_line": "",
+      "id": null,
+      "latitude": null,
+      "longitude": null,
+      "country": {
+          "id": "BR",
+          "name": "Brasil"
+      },
+      "state": {
+          "id": "BR-SP",
+          "name": "São Paulo"
+      },
+      "city": {
+          "id": "BR-SP-44",
+          "name": "São Paulo"
+      }
+  },
+  "address": {
+      "state_id": "BR-SP",
+      "state_name": "São Paulo",
+      "city_id": "BR-SP-44",
+      "city_name": "São Paulo"
+  },
+  "attributes": [
+      {
+          "id": "BRAND",
+          "name": "Marca",
+          "value_id": null,
+          "value_name": "ORMRME",
+          "attribute_group_id": "OTHERS",
+          "attribute_group_name": "Outros",
+          "value_struct": null,
+          "values": [
+              {
+                  "id": null,
+                  "name": "ORMRME",
+                  "struct": null,
+                  "source": 3376461333454861
+              }
+          ],
+          "source": 3376461333454861,
+          "value_type": "string"
+      },
+      {
+          "id": "ITEM_CONDITION",
+          "name": "Condição do item",
+          "value_id": "2230284",
+          "value_name": "Novo",
+          "attribute_group_id": "OTHERS",
+          "attribute_group_name": "Outros",
+          "value_struct": null,
+          "values": [
+              {
+                  "id": "2230284",
+                  "name": "Novo",
+                  "struct": null,
+                  "source": 6808261514773724
+              }
+          ],
+          "source": 6808261514773724,
+          "value_type": "list"
+      }
+  ],
+  "installments": {
+      "quantity": 12,
+      "amount": 15.67,
+      "rate": 16.64,
+      "currency_id": "BRL"
+  },
+  "winner_item_id": null,
+  "discounts": null,
+  "promotions": [],
+  "inventory_id": null
+}

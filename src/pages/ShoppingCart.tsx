@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { CART_KEY } from '../utils/constants';
 // import { AsyncStorage } from 'react-native';
 
 class ShoppingCart extends Component {
@@ -8,13 +9,13 @@ class ShoppingCart extends Component {
   }
 
   componentDidMount() {
-    const productsList = JSON.parse(localStorage.getItem('itensDoCarrinho'));
+    const productsList = JSON.parse(localStorage.getItem(CART_KEY));
     this.setState({ productsList });
   }
 
   handleClick = ({ target }) => {
     const { name, id } = target;
-    const productsList = JSON.parse(localStorage.getItem('itensDoCarrinho'));
+    const productsList = JSON.parse(localStorage.getItem(CART_KEY));
     const selectedProduct = productsList.find((product) => product.id === id);
     if (name === 'minus') {
       if (selectedProduct.quantidade === 1) {
@@ -36,46 +37,46 @@ class ShoppingCart extends Component {
 
     productsList.splice(index, 1, selectedProduct);
     this.setState({ productsList });
-    localStorage.setItem('itensDoCarrinho', JSON.stringify(productsList));
+    localStorage.setItem(CART_KEY, JSON.stringify(productsList));
   }
 
   render() {
     const { productsList } = this.state;
     return (
       <div>
-        { !productsList
+        {!productsList
           ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
           : (
             <div>
               {productsList.map((item) => (
-                <div key={ item.id }>
+                <div key={item.id}>
                   <div>
                     <p data-testid="shopping-cart-product-name">
-                      { item.name }
+                      {item.name}
                     </p>
                     <p>
-                      { item.price }
+                      {item.price}
                     </p>
                     <p data-testid="shopping-cart-product-quantity">
-                      { item.quantidade }
+                      {item.quantidade}
                     </p>
                   </div>
                   <div>
                     <button
                       data-testid="product-decrease-quantity"
                       type="button"
-                      id={ item.id }
+                      id={item.id}
                       name="minus"
-                      onClick={ this.handleClick }
+                      onClick={this.handleClick}
                     >
                       -
                     </button>
                     <button
                       data-testid="product-increase-quantity"
                       type="button"
-                      id={ item.id }
+                      id={item.id}
                       name="add"
-                      onClick={ this.handleClick }
+                      onClick={this.handleClick}
                     >
                       +
                     </button>
