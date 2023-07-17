@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import FilledStar from '../images/filled-star.png';
 import EmptyStar from '../images/empty-star.png';
+import FilledStar from '../images/filled-star.png';
 
 class ReviewStars extends React.Component {
   render() {
@@ -22,9 +21,5 @@ class ReviewStars extends React.Component {
     );
   }
 }
-
-ReviewStars.propTypes = {
-  rating: PropTypes.string.isRequired,
-};
 
 export default ReviewStars;
