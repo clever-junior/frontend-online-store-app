@@ -6,7 +6,6 @@ export type AppContextValue = {
   setProducts?: (newValue: IProduct[]) => void,
   cartSize?: number,
   setCartSize?: (newValue: number) => void,
-  updateCartSize?: () => void,
 }
 
 const initialContextValue: AppContextValue = {
@@ -14,7 +13,6 @@ const initialContextValue: AppContextValue = {
   setProducts: () => { },
   cartSize: 0,
   setCartSize: () => { },
-  updateCartSize: () => { },
 }
 
 export const AppContext = createContext<AppContextValue>(initialContextValue);

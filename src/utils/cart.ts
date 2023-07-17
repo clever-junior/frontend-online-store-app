@@ -2,6 +2,17 @@ import IProduct, { ICartProduct } from "../interfaces/IProduct";
 import { CART_KEY } from "./constants";
 import { getItem, getParsedItem, setItem } from "./localStorage";
 
+const cartSize = ()  => {
+  const cartProducts = getParsedItem<ICartProduct[]>(CART_KEY);
+
+  const verifyQuantity = cartProducts.reduce((accumulator: number, { quantity }) => {
+    accumulator += quantity;
+    return accumulator;
+  }, 0);
+
+  return getItem(CART_KEY) ? verifyQuantity : 0;
+}
+
 const verifyCartProduct = (cartProduct: ICartProduct) => {
   if (!getItem(CART_KEY)) {
     setItem(CART_KEY);
@@ -19,7 +30,7 @@ const verifyCartProduct = (cartProduct: ICartProduct) => {
   return cartProduct;
 };
 
-export const addToCart = (product: IProduct, updateCartSize: () => void) => {
+export const addToCart = (product: IProduct, setCartSize: (value: number) => void) => {
   const cartProduct: ICartProduct = {
     ...product,
     quantity: 1,
@@ -46,5 +57,5 @@ export const addToCart = (product: IProduct, updateCartSize: () => void) => {
 
   setItem(CART_KEY, cartProductsList);
 
-  updateCartSize && updateCartSize();
+  setCartSize(cartSize())
 };

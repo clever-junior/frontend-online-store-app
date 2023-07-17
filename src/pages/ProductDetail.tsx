@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import ReviewStars from '../components/ReviewStars';
 import Stars from '../components/Stars';
 import { getProduct } from '../services/api';
 import IProduct from '../interfaces/IProduct';
 import Loading from '../components/Loading';
-import Header from '../components/Header';
 import ProductCard2 from './ProductDetail2';
+import { addToCart } from '../utils/cart';
+import { AppContext } from '../store/contexts/AppContext';
 
 function ProductDetail() {
   const { id } = useParams();
+  const { setCartSize } = useContext(AppContext);
   const [product, setProduct] = useState<IProduct>();
   const [starRating, setStarRating] = useState(0);
   const [productReview, setProductReview] = useState('');
@@ -22,61 +24,6 @@ function ProductDetail() {
 
     getProductFromAPI();
   }, [id]);
-
-  // updateCartSize = () => {
-  //   const cartSize = localStorage
-  //     .getItem('itensDoCarrinho')
-  //     ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
-  //       acc += el.quantidade;
-  //       return acc;
-  //     }, 0) : 0;
-  //   this.setState({ cartSize });
-  // }
-  // 
-  // getCartSize = () => {
-  //   const cartSize = localStorage
-  //     .getItem('itensDoCarrinho')
-  //     ? JSON.parse(localStorage.getItem('itensDoCarrinho')).reduce((acc, el) => {
-  //       acc += el.quantidade;
-  //       return acc;
-  //     }, 0) : 0;
-  //   return cartSize;
-  // }
-
-  // addToCart = async (item) => {
-  //   const product = {
-  //     name: item.title,
-  //     id: item.id,
-  //     thumbnail: item.thumbnail,
-  //     price: item.price,
-  //     quantidade: 1,
-  //   };
-
-  //   const resultLocalStorage = this.verifyLocalStorage(product);
-  //   let productsList = JSON.parse(localStorage.getItem('itensDoCarrinho'));
-  //   if (productsList.some((element) => element.id === resultLocalStorage.id)) {
-  //     const index = productsList
-  //       .indexOf(productsList.find((element) => element.id === resultLocalStorage.id));
-  //     productsList.splice(index, 1, resultLocalStorage);
-  //   } else {
-  //     productsList = [...productsList, resultLocalStorage];
-  //   }
-  //   localStorage.setItem('itensDoCarrinho', JSON.stringify(productsList));
-  //   this.updateCartSize();
-  // }
-
-  // verifyLocalStorage = (productObject) => {
-  //   if (!localStorage.getItem('itensDoCarrinho')) {
-  //     localStorage.setItem('itensDoCarrinho', JSON.stringify([]));
-  //   }
-  //   const initialStorage = JSON.parse(localStorage.getItem('itensDoCarrinho'));
-  //   const produto = initialStorage.find((product) => product.id === productObject.id);
-  //   if (produto) {
-  //     produto.quantidade += 1;
-  //     return produto;
-  //   }
-  //   return productObject;
-  // };
 
   const saveStarRating = (starRating) => setStarRating(starRating)
 
@@ -143,7 +90,7 @@ function ProductDetail() {
                 id={product.id}
                 type="button"
                 data-testid="product-detail-add-to-cart"
-                // onClick={() => this.addToCart(product)}
+                onClick={() => addToCart(product, setCartSize)}
               >
                 Adicionar ao carrinho
               </button>
@@ -183,17 +130,10 @@ function ProductDetail() {
                 </div>
               ))}
             </div>
-          </div>) : <Loading />}
+          </div>) : <Loading />
+      }
     </>
   );
 }
-
-// ProductDetail.propTypes = {
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//     }).isRequired,
-//   }).isRequired,
-// };
 
 export default ProductDetail;

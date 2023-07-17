@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { AppContext, AppContextValue } from '../../store/contexts/AppContext';
-import ProductsList from '../../components/ProductsList';
+import { AppContext, AppContextValue } from '../store/contexts/AppContext';
+import ProductsList from '../components/ProductsList';
 
 const CHUNK_SIZE = 4;
 
-function Home() {
+export const Home = () => {
   const { products }: AppContextValue = useContext(AppContext);
 
   const productsChunks = [];
@@ -25,20 +25,7 @@ function Home() {
             )))
           }
         </div>
-        <div>
-          {/* {
-              products && products
-                .map((product) => (
-                  <ProductCard
-                    product={product}
-                    onClick={addToCart}
-                    key={`card-${product.id}`}
-                  />))
-            } */}
-        </div>
       </div>
     </main>
   )
 }
-
-export default Home;
